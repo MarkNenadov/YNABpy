@@ -160,6 +160,20 @@ class YNAB3_Transaction_Lister:
         return self.contents
 
 
+    def get_accounts(self):
+        """ Get the list of accounts represented in this transaction
+        lister without duplicates
+        """
+
+        account_list = []
+        for transaction in self.contents:
+            if transaction.get_account() != None:
+                account_list.append(transaction.get_account())
+
+        # eliminate duplicates
+        return list(set(account_list))
+
+
     def get_payees(self):
         """ Get the list of payees represented in this transaction
         lister without duplicates
@@ -322,6 +336,7 @@ if __name__ == "__main__":
 
     transaction_lister = yparser.get_transaction_lister()
     print("# of Payees across the database:" + str(len(transaction_lister.get_payees())))
+    print("# of Accounts across the database:" + str(len(transaction_lister.get_accounts())))
     print("Percentage of transactions accepted across the database:" + \
           str(transaction_lister.get_pct_accepted()))
 
