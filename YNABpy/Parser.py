@@ -49,7 +49,7 @@ class YNAB3_Transaction:
                           xmlize('outflow')]
 
     dom = None
-
+ + " ($" + t.get_outflow() +
     def __init__(self, transaction_dom):
         """Constructor
 
@@ -71,7 +71,7 @@ class YNAB3_Transaction:
                         if hasattr(subchild, "data"):
                                 setattr(self, child.tagName, subchild.data)
 
-    def __get_property(self, name):
+    def get_property(self, name):
         """ get a property (return None if it doesn't exist)
 
         We do this because this class loads properties from the xml
@@ -84,39 +84,51 @@ class YNAB3_Transaction:
     def get_payee(self):
         """ get_payee
         """
-        return self.__get_property('payee')
+        return self.get_property('payee')
 
     def get_date(self):
         """ get_date
         """
-        return self.__get_property('date')
+        return self.get_property('date')
 
     def get_accepted(self):
         """ get_accepted
         """
-        return self.__get_property('accepted')
+        return self.get_property('accepted')
 
     def get_inflow(self):
         """ get_inflow
         """
-        return self.__get_property('inflow')
+        return self.get_property('inflow')
 
     def get_outflow(self):
         """ get_outflow
         """
-        return self.__get_property('outflow')
+        return self.get_property('outflow')
+
+    def get_balance(self):
+        """ get_balance
+
+        Get the balance for this transaction, accounting
+        for both outflow and inflow
+        """
+
+        if self.get_outflow() != None and self.get_inflow() != None:
+            return float(self.get_inflow()) - float(self.get_outflow()) 
+        else:
+            return None
 
     def get_memo(self):
         """ get_memo
         """
 
-        return self.__get_property('memo')
+        return self.get_property('memo')
 
     def get_account(self):
         """ get_account
         """
 
-        return self.__get_property('account')
+        return self.get_property('account')
 
 
     def get_xml(self):
@@ -147,11 +159,6 @@ class YNAB3_Transaction_Lister:
 
         return self.contents
 
-    def amount(self):
-        """ Return # of transactions represented
-        """
-
-        return len(self.contents)
 
     def get_payees(self):
         """ Get the list of payees represented in this transaction
@@ -165,6 +172,70 @@ class YNAB3_Transaction_Lister:
 
         # eliminate duplicates
         return list(set(payee_list))
+
+    def __get_transactions_by_text_filter(self, field, filter_str):
+        """ Get transactions that have a argument-supplied property that 
+        matches a substring
+        """
+
+        transaction_list = []
+
+        for transaction in self.get_content():
+            if transaction.get_property(field) != None:
+                if (transaction.get_property(field).find(filter_str) != -1):
+                    transaction_list.append(transaction)
+
+        return transaction_list
+
+
+    def get_transactions_by_payee(self, payee_substr):
+        """ Get transactions that have a payee that matches
+        a substring
+        """
+
+        return self.__get_transactions_by_text_filter('payee', payee_substr)
+
+
+    def get_transactions_by_memo(self, memo_substr):
+        """ Get transactions that have a memo that matches
+        a substring
+        """
+
+        return self.__get_transactions_by_text_filter('memo', memo_substr)
+
+    def get_transactions_by_outflow_filter(self, outflow_filter):
+        """
+        get transactions that have an outflow that falls inside
+        of a tuple in the format of (low number, high number)
+        """
+
+        transaction_list = []
+
+        for transaction in self.get_content():
+            if transaction.get_outflow() != None:
+                if (float(transaction.get_outflow()) >= outflow_filter[0] and \
+                        float(transaction.get_outflow()) <= outflow_filter[1]):
+                    transaction_list.append(transaction)
+
+        return transaction_list
+
+    def get_transactions_by_inflow_filter(self, inflow_filter):
+        """
+        get transactions that have an inflow that falls inside
+        of a tuple in the format of (low number, high number)
+        """
+
+        transaction_list = []
+
+        for transaction in self.get_content():
+            if transaction.get_inflow() != None:
+                if (float(transaction.get_inflow()) >= inflow_filter[0] and \
+                        float(transaction.get_inflow()) <= inflow_filter[1]):
+                    transaction_list.append(transaction)
+
+        return transaction_list
+
+
 
     def get_total_inflow(self):
         """ Get total inflow represented in this transaction lister
@@ -239,11 +310,56 @@ class YNAB3_Parser:
         return transaction_lister
 
 if __name__ == "__main__":
+
     YNAB_DATA_FILE = "F:/Development/PortableGit/YNABpy/YNABpy/test_budget.ynab3"
     yparser = YNAB3_Parser(YNAB_DATA_FILE)
+
+
+    # test various total functions (total # payees, total percentage of accepted
+    # transactions, etc.)
+
     transaction_lister = yparser.get_transaction_lister()
-    print("# of Payees across the database:")
-    print(len(transaction_lister.get_payees()))
-    print("Percentage of transactions accepted across the database:")
-    print(transaction_lister.get_pct_accepted())
-    
+    print("# of Payees across the database:" + str(len(transaction_lister.get_payees())))
+    print("Percentage of transactions accepted across the database:" + \
+          str(transaction_lister.get_pct_accepted()))
+
+    # test filtering transaction list based on payee substring
+
+    print("\nFilter by transactions with payees that match 'Canadian':\n")
+
+    for t in transaction_lister.get_transactions_by_payee('Canadian'):
+        print( "'" + t.get_payee()  + " ($" + t.get_outflow() + " outflow) ' matches 'Canadian'" )
+
+    # test filtering transaction list based on payee memo
+
+    print("\nFilter by transactions with payees that match 'immigration':\n")
+
+    for t in transaction_lister.get_transactions_by_memo('immigration'):
+        print( "'" + t.get_memo() + " ($" + t.get_outflow() + " outflow)' matches 'immigration'" )
+
+
+    # test inflow/outflow filtering
+
+    print( "\nTransactions going out that are between $1000 and $9000:" )
+    for t in transaction_lister.get_transactions_by_outflow_filter([1000, 9000]):
+        t_date = "?"
+
+        if t.get_payee() != None:
+            t_payee = t.get_payee()
+
+        if t.get_date() != None:
+            t_date = t.get_date()
+
+        print(t_payee + " (outflow of $"+str(t.get_outflow())+") on " + t_date + " )")
+
+    print( "\nTransactions coming in that are between $1000 and $9000:" )
+    for t in transaction_lister.get_transactions_by_inflow_filter([1000, 9000]):
+        t_date = "?"
+
+        if t.get_payee() != None:
+            t_payee = t.get_payee()
+
+        if t.get_date() != None:
+            t_date = t.get_date()
+
+        print(t_payee + " (inflow of $"+str(t.get_inflow())+") on " + t_date + " )")
