@@ -4,6 +4,12 @@ INTRODUCTON
 
 A Python module to interface with the YNAB (You Need A Budget) application.
 
+SETUP
+
+Just run:
+
+    python setup.py install
+
 AUTHOR
 
 Mark J. Nenadov (2011)
