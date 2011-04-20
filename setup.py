@@ -1,3 +1,7 @@
 from distutils.core import setup
 
-setup(name="ynabpy", version="1.0", py_modules=["YNABpy"],)
+setup(name="YNABpy", version="1.0", 
+      author="Mark Nenadov",
+      author_email="marknenadov@gmail.com",
+      description="A module to interface with YNAB (You Need A Budget)",
+      packages=["YNABpy"],)
