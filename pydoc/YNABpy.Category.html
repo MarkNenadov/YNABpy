@@ -1,0 +1,151 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module YNABpy.Category</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong><a href="YNABpy.html"><font color="#ffffff">YNABpy</font></a>.Category</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:///F:/development/portablegit/ynabpy/ynabpy/category.py">f:\development\portablegit\ynabpy\ynabpy\category.py</a></font></td></tr></table>
+    <p></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="YNABpy.BaseClasses.html#YNAB3_AccountingWidget">YNABpy.BaseClasses.YNAB3_AccountingWidget</a>(<a href="builtins.html#object">builtins.object</a>)
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="YNABpy.Category.html#YNAB3_Category">YNAB3_Category</a>(<a href="YNABpy.BaseClasses.html#YNAB3_AccountingWidget">YNABpy.BaseClasses.YNAB3_AccountingWidget</a>, <a href="YNABpy.BaseClasses.html#YNAB3_Lister">YNABpy.BaseClasses.YNAB3_Lister</a>)
+</font></dt></dl>
+</dd>
+<dt><font face="helvetica, arial"><a href="YNABpy.BaseClasses.html#YNAB3_Lister">YNABpy.BaseClasses.YNAB3_Lister</a>(<a href="builtins.html#object">builtins.object</a>)
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="YNABpy.Category.html#YNAB3_Category">YNAB3_Category</a>(<a href="YNABpy.BaseClasses.html#YNAB3_AccountingWidget">YNABpy.BaseClasses.YNAB3_AccountingWidget</a>, <a href="YNABpy.BaseClasses.html#YNAB3_Lister">YNABpy.BaseClasses.YNAB3_Lister</a>)
+</font></dt><dt><font face="helvetica, arial"><a href="YNABpy.Category.html#YNAB3_Category_Lister">YNAB3_Category_Lister</a>
+</font></dt></dl>
+</dd>
+</dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="YNAB3_Category">class <strong>YNAB3_Category</strong></a>(<a href="YNABpy.BaseClasses.html#YNAB3_AccountingWidget">YNABpy.BaseClasses.YNAB3_AccountingWidget</a>, <a href="YNABpy.BaseClasses.html#YNAB3_Lister">YNABpy.BaseClasses.YNAB3_Lister</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#YNAB3_Category">YNAB3_Category</a><br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="YNABpy.Category.html#YNAB3_Category">YNAB3_Category</a></dd>
+<dd><a href="YNABpy.BaseClasses.html#YNAB3_AccountingWidget">YNABpy.BaseClasses.YNAB3_AccountingWidget</a></dd>
+<dd><a href="YNABpy.BaseClasses.html#YNAB3_Lister">YNABpy.BaseClasses.YNAB3_Lister</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="YNAB3_Category-__init__"><strong>__init__</strong></a>(self, category_dom)</dt><dd><tt>Constructor</tt></dd></dl>
+
+<dl><dt><a name="YNAB3_Category-get_children"><strong>get_children</strong></a>(self)</dt><dd><tt>Get&nbsp;this&nbsp;Categories&nbsp;child&nbsp;Categories</tt></dd></dl>
+
+<dl><dt><a name="YNAB3_Category-get_name"><strong>get_name</strong></a>(self)</dt><dd><tt>get_name</tt></dd></dl>
+
+<dl><dt><a name="YNAB3_Category-get_type"><strong>get_type</strong></a>(self)</dt><dd><tt>get_name</tt></dd></dl>
+
+<dl><dt><a name="YNAB3_Category-load_properties"><strong>load_properties</strong></a>(self, child)</dt><dd><tt>__load_properties<br>
+Private&nbsp;method&nbsp;to&nbsp;Load&nbsp;ynab&nbsp;category&nbsp;properties&nbsp;from&nbsp;a&nbsp;node</tt></dd></dl>
+
+<hr>
+Methods inherited from <a href="YNABpy.BaseClasses.html#YNAB3_AccountingWidget">YNABpy.BaseClasses.YNAB3_AccountingWidget</a>:<br>
+<dl><dt><a name="YNAB3_Category-get_balance"><strong>get_balance</strong></a>(self)</dt><dd><tt>get_balance<br>
+&nbsp;<br>
+Get&nbsp;the&nbsp;balance&nbsp;for&nbsp;this&nbsp;transaction,&nbsp;accounting<br>
+for&nbsp;both&nbsp;outflow&nbsp;and&nbsp;inflow</tt></dd></dl>
+
+<dl><dt><a name="YNAB3_Category-get_inflow"><strong>get_inflow</strong></a>(self)</dt><dd><tt>get_inflow</tt></dd></dl>
+
+<dl><dt><a name="YNAB3_Category-get_memo"><strong>get_memo</strong></a>(self)</dt><dd><tt>get_memo</tt></dd></dl>
+
+<dl><dt><a name="YNAB3_Category-get_outflow"><strong>get_outflow</strong></a>(self)</dt><dd><tt>get_outflow</tt></dd></dl>
+
+<dl><dt><a name="YNAB3_Category-get_property"><strong>get_property</strong></a>(self, name)</dt><dd><tt>get&nbsp;a&nbsp;property&nbsp;(return&nbsp;None&nbsp;if&nbsp;it&nbsp;doesn't&nbsp;exist)<br>
+&nbsp;<br>
+We&nbsp;do&nbsp;this&nbsp;because&nbsp;this&nbsp;class&nbsp;loads&nbsp;properties&nbsp;from&nbsp;the&nbsp;xml<br>
+dynamically,&nbsp;so&nbsp;there's&nbsp;a&nbsp;chance&nbsp;some&nbsp;properties&nbsp;may&nbsp;be&nbsp;missing</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="YNABpy.BaseClasses.html#YNAB3_AccountingWidget">YNABpy.BaseClasses.YNAB3_AccountingWidget</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<hr>
+Data and other attributes inherited from <a href="YNABpy.BaseClasses.html#YNAB3_AccountingWidget">YNABpy.BaseClasses.YNAB3_AccountingWidget</a>:<br>
+<dl><dt><strong>dom</strong> = None</dl>
+
+<dl><dt><strong>fields_of_interest</strong> = ['memo', 'inflow', 'outflow']</dl>
+
+<hr>
+Methods inherited from <a href="YNABpy.BaseClasses.html#YNAB3_Lister">YNABpy.BaseClasses.YNAB3_Lister</a>:<br>
+<dl><dt><a name="YNAB3_Category-add"><strong>add</strong></a>(self, t)</dt><dd><tt>add&nbsp;an&nbsp;item</tt></dd></dl>
+
+<dl><dt><a name="YNAB3_Category-get_content"><strong>get_content</strong></a>(self)</dt><dd><tt>return&nbsp;array&nbsp;of&nbsp;listed&nbsp;objects</tt></dd></dl>
+
+<dl><dt><a name="YNAB3_Category-get_items_by_text_filter"><strong>get_items_by_text_filter</strong></a>(self, field, filter_str)</dt><dd><tt>Get&nbsp;items&nbsp;that&nbsp;have&nbsp;a&nbsp;argument-supplied&nbsp;property&nbsp;value&nbsp;that&nbsp;<br>
+matches&nbsp;a&nbsp;substring</tt></dd></dl>
+
+<hr>
+Data and other attributes inherited from <a href="YNABpy.BaseClasses.html#YNAB3_Lister">YNABpy.BaseClasses.YNAB3_Lister</a>:<br>
+<dl><dt><strong>contents</strong> = []</dl>
+
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="YNAB3_Category_Lister">class <strong>YNAB3_Category_Lister</strong></a>(<a href="YNABpy.BaseClasses.html#YNAB3_Lister">YNABpy.BaseClasses.YNAB3_Lister</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#YNAB3_Category_Lister">YNAB3_Category_Lister</a>&nbsp;Class<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="YNABpy.Category.html#YNAB3_Category_Lister">YNAB3_Category_Lister</a></dd>
+<dd><a href="YNABpy.BaseClasses.html#YNAB3_Lister">YNABpy.BaseClasses.YNAB3_Lister</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="YNAB3_Category_Lister-get_types"><strong>get_types</strong></a>(self)</dt><dd><tt>Get&nbsp;unique&nbsp;list&nbsp;of&nbsp;category&nbsp;types&nbsp;for&nbsp;this&nbsp;list<br>
+of&nbsp;categories</tt></dd></dl>
+
+<hr>
+Methods inherited from <a href="YNABpy.BaseClasses.html#YNAB3_Lister">YNABpy.BaseClasses.YNAB3_Lister</a>:<br>
+<dl><dt><a name="YNAB3_Category_Lister-__init__"><strong>__init__</strong></a>(self)</dt><dd><tt>Constructor</tt></dd></dl>
+
+<dl><dt><a name="YNAB3_Category_Lister-add"><strong>add</strong></a>(self, t)</dt><dd><tt>add&nbsp;an&nbsp;item</tt></dd></dl>
+
+<dl><dt><a name="YNAB3_Category_Lister-get_content"><strong>get_content</strong></a>(self)</dt><dd><tt>return&nbsp;array&nbsp;of&nbsp;listed&nbsp;objects</tt></dd></dl>
+
+<dl><dt><a name="YNAB3_Category_Lister-get_items_by_text_filter"><strong>get_items_by_text_filter</strong></a>(self, field, filter_str)</dt><dd><tt>Get&nbsp;items&nbsp;that&nbsp;have&nbsp;a&nbsp;argument-supplied&nbsp;property&nbsp;value&nbsp;that&nbsp;<br>
+matches&nbsp;a&nbsp;substring</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="YNABpy.BaseClasses.html#YNAB3_Lister">YNABpy.BaseClasses.YNAB3_Lister</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<hr>
+Data and other attributes inherited from <a href="YNABpy.BaseClasses.html#YNAB3_Lister">YNABpy.BaseClasses.YNAB3_Lister</a>:<br>
+<dl><dt><strong>contents</strong> = []</dl>
+
+</td></tr></table></td></tr></table>
+</body></html>
