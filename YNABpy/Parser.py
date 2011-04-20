@@ -38,38 +38,30 @@ def xmlize(item):
         return item
     return unicode(item)
 
-class YNAB3_Transaction:
+
+class YNAB3_AccountingWidget:
     """
-    YNAB3Transaction class
+    Base class for various YNAB3 things
+    (ie. YNAB3_Payee, YNAB3_Transaction)
 
     """
 
-    fields_of_interest = [xmlize('payee'), xmlize('date'), xmlize('accepted'), \
-                          xmlize('account'), xmlize('memo'), xmlize('inflow'), \
-                          xmlize('outflow')]
+    fields_of_interest = [xmlize('memo'), xmlize('inflow'), xmlize('outflow')]
 
-    dom = None
-
-    def __init__(self, transaction_dom):
+    def __init__(self, transaction_dom, additional_fields_of_interest):
         """Constructor
 
         """
-    
+
         self.dom = transaction_dom
 
-        for child in transaction_dom.childNodes:
-            self.__load_properties(child)
+        for field in additional_fields_of_interest:
+            if field not in self.fields_of_interest:
+                self.fields_of_interest.append(field)
 
-    def __load_properties(self, child):
-        """ __load_properties
-        Private method to Load ynab transaction properties from a node
-        """
-        if child.nodeType == child.ELEMENT_NODE:
-            if child.hasChildNodes():
-                if child.tagName in self.fields_of_interest:
-                    for subchild in child.childNodes:
-                        if hasattr(subchild, "data"):
-                                setattr(self, child.tagName, subchild.data)
+        for child in transaction_dom.childNodes:
+            self.load_properties(child)
+
 
     def get_property(self, name):
         """ get a property (return None if it doesn't exist)
@@ -81,20 +73,6 @@ class YNAB3_Transaction:
             return getattr(self, name)
         return None
 
-    def get_payee(self):
-        """ get_payee
-        """
-        return self.get_property('payee')
-
-    def get_date(self):
-        """ get_date
-        """
-        return self.get_property('date')
-
-    def get_accepted(self):
-        """ get_accepted
-        """
-        return self.get_property('accepted')
 
     def get_inflow(self):
         """ get_inflow
@@ -124,6 +102,97 @@ class YNAB3_Transaction:
 
         return self.get_property('memo')
 
+
+class YNAB3_Payee(YNAB3_AccountingWidget):
+    """
+    YNAB3Transaction class
+
+    """
+
+    name = ""
+
+    def __init__(self, payee_dom):
+        """Constructor
+
+        """
+        
+        super(YNAB3_Payee, self).__init__(payee_dom, [xmlize('category')])
+
+
+    def load_properties(self, child):
+        """ __load_properties
+        Private method to Load ynab payee properties from a node
+        """
+        if child.nodeType == child.ELEMENT_NODE:
+            if child.hasChildNodes():
+                if child.nodeName == "name":
+                    for subchild in child.childNodes:
+                        self.name = subchild.data
+                elif child.nodeName == "autoFillData":
+                    for subchild in child.childNodes:
+                        if not hasattr(subchild, "data"):        
+                            for subsubchild in subchild.childNodes:
+                                if hasattr(subsubchild, "data"):
+                                    setattr(self, subchild.tagName, subsubchild.data)
+
+    def get_category(self):
+        """ get_memo
+        """
+
+        return self.get_property('category')
+
+    def get_name(self):
+        """ get_name
+        """
+
+        return self.get_property('name')
+
+
+class YNAB3_Transaction(YNAB3_AccountingWidget):
+    """
+    YNAB3Transaction class
+    
+    """
+
+    fields_of_interest = [xmlize('payee'), xmlize('date'), xmlize('accepted'), \
+                          xmlize('account'), xmlize('memo'), xmlize('inflow'), \
+                          xmlize('outflow')]
+
+    dom = None
+
+    def __init__(self, transaction_dom):
+        """Constructor
+
+        """
+        super(YNAB3_Transaction, self).__init__(transaction_dom, [xmlize('accepted'), \
+              xmlize('date'), xmlize('account'), xmlize('payee')])
+
+    def load_properties(self, child):
+        """ __load_properties
+        Private method to Load ynab transaction properties from a node
+        """
+        if child.nodeType == child.ELEMENT_NODE:
+            if child.hasChildNodes():
+                if child.tagName in self.fields_of_interest:
+                    for subchild in child.childNodes:
+                        if hasattr(subchild, "data"):
+                                setattr(self, child.tagName, subchild.data)
+
+    def get_payee(self):
+        """ get_payee
+        """
+        return self.get_property('payee')
+
+    def get_date(self):
+        """ get_date
+        """
+        return self.get_property('date')
+
+    def get_accepted(self):
+        """ get_accepted
+        """
+        return self.get_property('accepted')
+
     def get_account(self):
         """ get_account
         """
@@ -137,11 +206,9 @@ class YNAB3_Transaction:
 
         return self.dom.toxml()
 
-
-class YNAB3_Transaction_Lister:
+class YNAB3_Lister:
     """
-    YNAB3_Transaction_List Class
-
+    YNAB3_Lister base class
     """
 
     contents = []
@@ -154,11 +221,81 @@ class YNAB3_Transaction_Lister:
         pass 
     
     def get_content(self):
-        """ return array of transactions
+        """ return array of listed objects
         """
 
         return self.contents
 
+    def add(self, t):
+        """ add an item
+        """
+
+        self.contents.append(t)
+
+    def get_items_by_text_filter(self, field, filter_str):
+        """ Get items that have a argument-supplied property value that 
+        matches a substring
+        """
+
+        item_list = []
+
+        for item in self.get_content():
+            if item.get_property(field) != None:
+                if (item.get_property(field).find(filter_str) != -1):
+                    item_list.append(item)
+
+        return item_list
+
+
+class YNAB3_Payee_Lister(YNAB3_Lister):
+    """
+    YNAB3_Payee_Lister
+
+    """
+
+    def get_categories(self):
+        """ Get a unique list of categories for this list of
+        payees
+        """
+
+        category_list = []
+
+        for payee in self.contents:
+            if payee.get_category() != None:
+                category_list.append(payee.get_category())
+
+        # eliminate duplicates
+        return list(set(category_list))
+
+    def get_payees_by_memo(self, memo_substr):
+        """ Get transactions that have a memo that matches
+        a substring
+        """
+
+        return self.get_items_by_text_filter('memo', memo_substr)
+
+    def get_payees_by_name(self, name_substr):
+        """ Get transactions that have a name that matches
+        a substring
+        """
+
+        return self.get_items_by_text_filter('name', name_substr)
+
+
+    def get_payees_by_category(self, category_substr):
+        """ Get transactions that have a category that matches
+        a substring
+        """
+
+        return self.get_items_by_text_filter('category', category_substr)
+
+
+
+class YNAB3_Transaction_Lister(YNAB3_Lister):
+    """
+    YNAB3_Transaction_List Class
+
+    """
 
     def get_accounts(self):
         """ Get the list of accounts represented in this transaction
@@ -207,7 +344,7 @@ class YNAB3_Transaction_Lister:
         a substring
         """
 
-        return self.__get_transactions_by_text_filter('payee', payee_substr)
+        return self.get_items_by_text_filter('payee', payee_substr)
 
 
     def get_transactions_by_memo(self, memo_substr):
@@ -215,7 +352,7 @@ class YNAB3_Transaction_Lister:
         a substring
         """
 
-        return self.__get_transactions_by_text_filter('memo', memo_substr)
+        return self.get_items_by_text_filter('memo', memo_substr)
 
     def get_transactions_by_outflow_filter(self, outflow_filter):
         """
@@ -290,14 +427,6 @@ class YNAB3_Transaction_Lister:
         return round(accepted / (accepted + not_accepted), 2) * 100
 
 
-
-    def add(self, t):
-        """ add a transaction
-        """
-
-        self.contents.append(t)
-
-
 class YNAB3_Parser:
     minidom = None
 
@@ -313,8 +442,19 @@ class YNAB3_Parser:
 
         self.minidom = minidom.parse(file_path)
 
+    def get_payee_lister(self):
+        """ get_payee_lister
+        """
+
+        payee_lister = YNAB3_Payee_Lister()
+        for payee_node in self.minidom.getElementsByTagName('payees'):
+            for p in payee_node.getElementsByTagName('data.vos.PayeeVO'):
+                payee_lister.add( YNAB3_Payee(p) )
+        return payee_lister
+
+
     def get_transaction_lister(self):
-        """ get transaction_liser
+        """ get_transaction_lister
         """
 
         transaction_lister = YNAB3_Transaction_Lister()
@@ -328,3 +468,9 @@ if __name__ == "__main__":
     print("This is a module meant for being imported. Please refer to examples in the project folder!")
 
    
+    YNAB_DATA_FILE = "F:/Development/PortableGit/YNABpy/YNABpy/test_budget.ynab3"
+    yparser = YNAB3_Parser(YNAB_DATA_FILE)
+
+    payee_lister = yparser.get_payee_lister()
+    for x in payee_lister.get_payees_by_name("Mark"):
+       print( x.get_name() )
