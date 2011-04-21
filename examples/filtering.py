@@ -6,17 +6,26 @@ yparser = Parser.YNAB3_Parser(YNAB_DATA_FILE)
 transaction_lister = yparser.get_transaction_lister()
 category_lister = yparser.get_category_lister()
   
-    
+
+# test filtering transaction list based on category name substring
+
+print("\nFilter by transactions with category that match 'Cars':\n")
+
+for t in transaction_lister.get_transactions_by_category_name('Cars'):
+    print( "'" + t.get_payee()  + " ($" + t.get_outflow() + " outflow) ' matches 'Cars'" )
+
+
+
 # test filtering transaction list based on payee substring
 
-print("\nFilter by transactions with payees that match 'Canadian':\n")
+print("\nFilter by transactions with payee that matches 'Canadian':\n")
 
 for t in transaction_lister.get_transactions_by_payee('Canadian'):
     print( "'" + t.get_payee()  + " ($" + t.get_outflow() + " outflow) ' matches 'Canadian'" )
 
 # test filtering transaction list based on payee memo
 
-print("\nFilter by transactions with payees that match 'immigration':\n")
+print("\nFilter by transactions with payee that matches 'immigration':\n")
 
 for t in transaction_lister.get_transactions_by_memo('immigration'):
     print( "'" + t.get_memo() + " ($" + t.get_outflow() + " outflow)' matches 'immigration'" )
@@ -49,7 +58,7 @@ for t in transaction_lister.get_transactions_by_inflow_filter([1000, 9000]):
 
     print(t_payee + " (inflow of $"+str(t.get_inflow())+") on " + t_date + " )")
 
-# test category subchild type filtering
+# test category subchild name filtering
 
 print()
 print("Category listing (with subcategories whose name matches 'Fun':")
@@ -58,3 +67,6 @@ for c in category_lister.get_content():
     print( "Cat : " + c.get_name() + "(type: "+c.get_type()+")")
     for x in c.get_children('Fun'):
         print("Sub Cat :" + x.get_name() + " (Parent Name is is " + x.get_parent().get_name() + ")")
+
+
+

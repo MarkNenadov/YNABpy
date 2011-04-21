@@ -53,7 +53,7 @@ class YNAB3_Transaction(YNAB3_AccountingWidget):
 
         """
         super(YNAB3_Transaction, self).__init__(transaction_dom, [xmlize('accepted'), \
-              xmlize('date'), xmlize('account'), xmlize('payee')])
+              xmlize('date'), xmlize('account'), xmlize('payee'), xmlize('category')])
 
     def load_properties(self, child):
         """ __load_properties
@@ -157,6 +157,21 @@ class YNAB3_Transaction_Lister(YNAB3_Lister):
         """
 
         return self.get_items_by_text_filter('memo', memo_substr)
+
+    def get_transactions_by_category_name(self, category_name):
+        """ Get transactions that have a memo that matches
+        a substring
+        """
+        return self.get_items_by_text_filter('category', category_name)
+
+
+    def get_transactions_by_category(self, category_objs):
+        """ Get transactions that have a memo that matches
+        a substring
+        """
+
+        return self.get_items_by_text_filter('category', category_obj.get_name())
+
 
     def get_transactions_by_outflow_filter(self, outflow_filter):
         """
