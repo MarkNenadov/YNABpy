@@ -1,6 +1,40 @@
-from YNABpy.Support import xmlize
-from YNABpy.BaseClasses import YNAB3_AccountingWidget
-from YNABpy.BaseClasses import YNAB3_Lister
+"""
+
+Transaction.py
+
+INTRODUCTION
+
+YNABpy - A Python module for the YNAB (You Need A Budget) application.
+
+AUTHOR
+
+Mark J. Nenadov (2011)
+* Essex, Ontario
+* Email: <marknenadov@gmail.com>
+
+LICENSING
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version
+
+This program is distributed in the hope that it will be useful
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+"""
+
+try:
+    from YNABpy.Support import xmlize
+    from YNABpy.BaseClasses import YNAB3_AccountingWidget
+    from YNABpy.BaseClasses import YNAB3_Lister
+except ImportError:
+    print("FATAL ERROR, critical YNAB3py file missing: " + str(err))
 
 class YNAB3_Transaction(YNAB3_AccountingWidget):
     """
