@@ -25,8 +25,10 @@ class YNAB3_Category(YNAB3_AccountingWidget, YNAB3_Lister):
                     if hasattr(subchild, "data"):
                         setattr(self, child.tagName, subchild.data)
 
-    def get_children(self):
+    def get_children(self, type_filter=''):
         """ Get this Categories child Categories
+
+        (optional argument filters by type)
         """
 
         children = []
@@ -37,7 +39,9 @@ class YNAB3_Category(YNAB3_AccountingWidget, YNAB3_Lister):
                     for subchild in child.childNodes:
                         if subchild.nodeType == subchild.ELEMENT_NODE:
                             if subchild.tagName == "data.vos.SubCategoryVO":
-                                children.append(YNAB3_Category(subchild))
+                                category = YNAB3_Category(subchild)
+                                if category.get_type(type_filter) != -1:
+                                    children.append(category)
         return children
         
 
