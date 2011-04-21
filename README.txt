@@ -10,6 +10,12 @@ Just run:
 
     python setup.py install
 
+TODO
+
+- Expand Category functionality
+- Better error handling
+- Add module docstrings to new modules
+
 AUTHOR
 
 Mark J. Nenadov (2011)
