@@ -1,6 +1,9 @@
-from YNABpy.Support import xmlize
-from YNABpy.BaseClasses import YNAB3_Lister
-from YNABpy.BaseClasses import YNAB3_AccountingWidget
+try:
+    from YNABpy.Support import xmlize
+    from YNABpy.BaseClasses import YNAB3_Lister
+    from YNABpy.BaseClasses import YNAB3_AccountingWidget
+except ImportError:
+    print("FATAL ERROR, critical YNAB3py file missing: " + str(err))
 
 class YNAB3_Category(YNAB3_AccountingWidget, YNAB3_Lister):
     """ YNAB3_Category
