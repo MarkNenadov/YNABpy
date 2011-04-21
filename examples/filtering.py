@@ -52,7 +52,7 @@ for t in transaction_lister.get_transactions_by_inflow_filter([1000, 9000]):
 # test category subchild type filtering
 
 for c in category_lister.get_content():
-    print("Category : " + c.get_name())
+    print( c)
     #for x in c.get_children():
     #    print("Sub Cat :" + x.get_name() + "(type: "+x.get_type()+")")
 

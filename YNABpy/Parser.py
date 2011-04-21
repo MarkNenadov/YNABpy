@@ -35,7 +35,7 @@ except ImportError:
     print("FATAL ERROR: Can't import xml.dom.minidom!")
 
 try:
-    from YNABpy.support import TAGS
+    from YNABpy.Support import TAGS
     from YNABpy.Payee import YNAB3_Payee_Lister
     from YNABpy.Payee import YNAB3_Payee
     from YNABpy.Category import YNAB3_Category_Lister
@@ -77,7 +77,9 @@ class YNAB3_Parser:
         c_lister = YNAB3_Category_Lister()
         for category_node in self.minidom.getElementsByTagName('categories'):
             for c in category_node.getElementsByTagName(TAGS['MASTER_CAT']):
-                c_lister.add( YNAB3_Category(c) )
+                category = YNAB3_Category(c)
+                print( category.get_name() + 'yoyoma') 
+                c_lister.add( category )
         return c_lister
 
     def get_transaction_lister(self):
@@ -86,7 +88,7 @@ class YNAB3_Parser:
 
         transaction_lister = YNAB3_Transaction_Lister()
         for transactions_node in self.minidom.getElementsByTagName('transactions'):
-            for transaction in transactions_node.getElementsByTagName(TAGS['TRANSACTION']):
+            for transaction in transactions_node.getElementsByTagName(TAGS['TRAN']):
                 transaction_lister.add( YNAB3_Transaction(transaction) )
         return transaction_lister
 

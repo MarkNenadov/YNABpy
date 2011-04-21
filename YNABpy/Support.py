@@ -16,9 +16,9 @@ def is_dom_element(dom):
     """ Is this dom an element?
     """
 
-    if dom.nodeType == subchild.ELEMENT_NODE:
-        return true
-    return false
+    if dom.nodeType == dom.ELEMENT_NODE:
+        return True
+    return False
 
 def xmlize(item):
     """ Do unicode on string if we

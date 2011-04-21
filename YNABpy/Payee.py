@@ -5,7 +5,7 @@ try:
     from YNABpy.BaseClasses import YNAB3_Lister
     from YNABpy.BaseClasses import YNAB3_AccountingWidget
 except ImportError as err:
-    print("FATAL ERROR, critical YNAB3py file missing: " + str(err)    
+    print("FATAL ERROR, critical YNAB3py file missing: " + str(err)) 
 
 class YNAB3_Payee(YNAB3_AccountingWidget):
     """
