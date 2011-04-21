@@ -32,6 +32,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 try:
     from YNABpy.Support import xmlize
+    from YNABpy.Support import is_dom_element
     from YNABpy.BaseClasses import YNAB3_Lister
     from YNABpy.BaseClasses import YNAB3_AccountingWidget
 except ImportError:
@@ -72,8 +73,8 @@ class YNAB3_Category(YNAB3_AccountingWidget, YNAB3_Lister):
             if child.nodeType == child.ELEMENT_NODE:
                 if child.tagName == 'subCategories':
                     for subchild in child.childNodes:
-                        if subchild.nodeType == subchild.ELEMENT_NODE:
-                            if subchild.tagName == "data.vos.SubCategoryVO":
+                        if is_dom_element(subchild):
+                            if subchild.tagName == TAGS['SUB_CAT']:
                                 category = YNAB3_Category(subchild)
                                 if category.get_type(type_filter) != -1:
                                     children.append(category)

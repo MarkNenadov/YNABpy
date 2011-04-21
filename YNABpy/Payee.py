@@ -1,6 +1,11 @@
-from YNABpy.Support import xmlize
-from YNABpy.BaseClasses import YNAB3_Lister
-from YNABpy.BaseClasses import YNAB3_AccountingWidget
+
+try:
+    from YNABpy.Support import xmlize
+    from YNABpy.Support import is_dom_element
+    from YNABpy.BaseClasses import YNAB3_Lister
+    from YNABpy.BaseClasses import YNAB3_AccountingWidget
+except ImportError as err:
+    print("FATAL ERROR, critical YNAB3py file missing: " + str(err)    
 
 class YNAB3_Payee(YNAB3_AccountingWidget):
     """
@@ -22,7 +27,7 @@ class YNAB3_Payee(YNAB3_AccountingWidget):
         """ __load_properties
         Private method to Load ynab payee properties from a node
         """
-        if child.nodeType == child.ELEMENT_NODE:
+        if is_dom_element(child):
             if child.hasChildNodes():
                 if child.nodeName == "name":
                     for subchild in child.childNodes:

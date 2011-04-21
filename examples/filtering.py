@@ -2,7 +2,9 @@ from YNABpy import Parser
 
 YNAB_DATA_FILE = "F:/Development/PortableGit/YNABpy/YNABpy/test_budget.ynab3"
 yparser = Parser.YNAB3_Parser(YNAB_DATA_FILE)
+
 transaction_lister = yparser.get_transaction_lister()
+category_lister = yparser.get_category_lister()
   
     
 # test filtering transaction list based on payee substring
@@ -46,3 +48,11 @@ for t in transaction_lister.get_transactions_by_inflow_filter([1000, 9000]):
         t_date = t.get_date()
 
     print(t_payee + " (inflow of $"+str(t.get_inflow())+") on " + t_date + " )")
+
+# test category subchild type filtering
+
+for c in category_lister.get_content():
+    print("Category : " + c.get_name())
+    #for x in c.get_children():
+    #    print("Sub Cat :" + x.get_name() + "(type: "+x.get_type()+")")
+

@@ -31,6 +31,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 try:
     from YNABpy.Support import xmlize
+    from YNABpy.Support import is_dom_element
     from YNABpy.BaseClasses import YNAB3_AccountingWidget
     from YNABpy.BaseClasses import YNAB3_Lister
 except ImportError:
@@ -58,7 +59,7 @@ class YNAB3_Transaction(YNAB3_AccountingWidget):
         """ __load_properties
         Private method to Load ynab transaction properties from a node
         """
-        if child.nodeType == child.ELEMENT_NODE:
+        if is_dom_element(child):
             if child.hasChildNodes():
                 if child.tagName in self.fields_of_interest:
                     for subchild in child.childNodes:

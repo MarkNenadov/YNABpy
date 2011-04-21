@@ -35,24 +35,25 @@ except ImportError:
     print("FATAL ERROR: Can't import xml.dom.minidom!")
 
 try:
-    from Payee import YNAB3_Payee_Lister
-    from Payee import YNAB3_Payee
-    from Category import YNAB3_Category_Lister
-    from Category import YNAB3_Category
-    from Transaction import YNAB3_Transaction_Lister
-    from Transaction import YNAB3_Transaction
+    from YNABpy.support import TAGS
+    from YNABpy.Payee import YNAB3_Payee_Lister
+    from YNABpy.Payee import YNAB3_Payee
+    from YNABpy.Category import YNAB3_Category_Lister
+    from YNABpy.Category import YNAB3_Category
+    from YNABpy.Transaction import YNAB3_Transaction_Lister
+    from YNABpy.Transaction import YNAB3_Transaction
 
 except ImportError as err:
-    print("FATAL ERROR: " + str(err))
+    print("FATAL ERROR, critical YNAB3py file missing: " + str(err))
 
 class YNAB3_Parser:
-    minidom = None
-
     """
     YNAB3Parser Class
 
     """
 
+    minidom = None
+    
     def __init__(self, file_path):
         """Constructor
 
@@ -66,18 +67,18 @@ class YNAB3_Parser:
 
         payee_lister = YNAB3_Payee_Lister()
         for payee_node in self.minidom.getElementsByTagName('payees'):
-            for p in payee_node.getElementsByTagName('data.vos.PayeeVO'):
+            for p in payee_node.getElementsByTagName(TAGS['PAYEE']):
                 payee_lister.add( YNAB3_Payee(p) )
         return payee_lister
 
     def get_category_lister(self):
         """ get_category_lister
         """
-        category_lister = YNAB3_Category_Lister()
+        c_lister = YNAB3_Category_Lister()
         for category_node in self.minidom.getElementsByTagName('categories'):
-            for c in category_node.getElementsByTagName('data.vos.MasterCategoryVO'):
-                category_lister.add( YNAB3_Category(c) )
-        return category_lister
+            for c in category_node.getElementsByTagName(TAGS['MASTER_CAT']):
+                c_lister.add( YNAB3_Category(c) )
+        return c_lister
 
     def get_transaction_lister(self):
         """ get_transaction_lister
@@ -85,7 +86,7 @@ class YNAB3_Parser:
 
         transaction_lister = YNAB3_Transaction_Lister()
         for transactions_node in self.minidom.getElementsByTagName('transactions'):
-            for transaction in transactions_node.getElementsByTagName('data.vos.TransactionVO'):
+            for transaction in transactions_node.getElementsByTagName(TAGS['TRANSACTION']):
                 transaction_lister.add( YNAB3_Transaction(transaction) )
         return transaction_lister
 
@@ -95,13 +96,13 @@ if __name__ == "__main__":
 
    
     YNAB_DATA_FILE = "F:/Development/PortableGit/YNABpy/YNABpy/test_budget.ynab3"
-    yparser = YNAB3_Parser(YNAB_DATA_FILE)
+    YPARSER = YNAB3_Parser(YNAB_DATA_FILE)
 
     #payee_lister = yparser.get_payee_lister()
     #for x in payee_lister.get_payees_by_name("Mark"):
     #   print( x.get_name() )
 
-    category_lister = yparser.get_category_lister()
+    category_lister = YPARSER.get_category_lister()
     print( category_lister.get_types())
     for c in category_lister.get_content():
         print( "Cat: " + c.get_name())
