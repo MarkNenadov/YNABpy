@@ -38,7 +38,7 @@ except ImportError:
 
 
 
-class YNAB3_AccountingWidget:
+class YNAB3_AccountingWidget(object):
     """
     Base class for various YNAB3 things
     (ie. YNAB3_Payee, YNAB3_Transaction)
@@ -110,7 +110,7 @@ class YNAB3_AccountingWidget:
 
 
 
-class YNAB3_Lister:
+class YNAB3_Lister(object):
     """
     YNAB3_Lister base class
     """
