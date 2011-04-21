@@ -51,8 +51,10 @@ for t in transaction_lister.get_transactions_by_inflow_filter([1000, 9000]):
 
 # test category subchild type filtering
 
-for c in category_lister.get_content():
-    print( c)
-    #for x in c.get_children():
-    #    print("Sub Cat :" + x.get_name() + "(type: "+x.get_type()+")")
+print()
+print("Category listing (with subcategories whose name matches 'Fun':")
 
+for c in category_lister.get_content():
+    print( "Cat : " + c.get_name() + "(type: "+c.get_type()+")")
+    for x in c.get_children('Fun'):
+        print("Sub Cat :" + x.get_name() + " (Parent Name is is " + x.get_parent().get_name() + ")")

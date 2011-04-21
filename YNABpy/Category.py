@@ -33,6 +33,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 try:
     from YNABpy.Support import xmlize
     from YNABpy.Support import is_dom_element
+    from YNABpy.Support import TAGS
     from YNABpy.BaseClasses import YNAB3_Lister
     from YNABpy.BaseClasses import YNAB3_AccountingWidget
 except ImportError:
@@ -40,6 +41,12 @@ except ImportError:
 
 class YNAB3_Category(YNAB3_AccountingWidget, YNAB3_Lister):
     """ YNAB3_Category
+
+    Please note: This class represents the base type Category. Sub Categories
+    are represented by the subclass YNAB3_SubCategory. One difference would be
+    that in the YNAB database Categories have a type, but SubCategories don't.
+    For our purposes, we also pass a reference to the parent object to a Sub 
+    Category but not to a Category.
     """
 
     def __init__(self, category_dom):
@@ -61,10 +68,10 @@ class YNAB3_Category(YNAB3_AccountingWidget, YNAB3_Lister):
                     if hasattr(subchild, "data"):
                         setattr(self, child.tagName, subchild.data)
 
-    def get_children(self, type_filter=''):
+    def get_children(self, name_filter=''):
         """ Get this Categories child Categories
 
-        (optional argument filters by type)
+        (optional argument filters by name)
         """
 
         children = []
@@ -75,8 +82,11 @@ class YNAB3_Category(YNAB3_AccountingWidget, YNAB3_Lister):
                     for subchild in child.childNodes:
                         if is_dom_element(subchild):
                             if subchild.tagName == TAGS['SUB_CAT']:
-                                category = YNAB3_Category(subchild)
-                                if category.get_type(type_filter) != -1:
+                                # note what we are doing here with 'self',
+                                # passing a reference to the subcategories
+                                # parent
+                                category = YNAB3_SubCategory(subchild, self)
+                                if category.get_name().find(name_filter) != -1:
                                     children.append(category)
         return children
         
@@ -91,9 +101,34 @@ class YNAB3_Category(YNAB3_AccountingWidget, YNAB3_Lister):
         """ get_name
         """
 
-        return self.get_property('name')
+        return self.get_property('type')
+
+class YNAB3_SubCategory(YNAB3_Category):
+    """ YNAB3_Category
+
+    Please note: This class represents a Sub Category, which is a subclass of
+    YNAB3_Category. One difference would be that in the YNAB database Categories 
+    have a type, but SubCategories don't. For our purposes, we also pass a reference 
+    to the parent object to a Sub Category but not to a Category.
+    """
+
+    parent = None
+
+    def __init__(self, category_dom, parent):
+        """ Constructor
+        """
+
+        self.parent = parent
+
+        super(YNAB3_Category, self).__init__(category_dom, \
+                [xmlize('name'),  xmlize('note')])
 
 
+    def get_parent(self):
+        """ Get this SubCategory's parent (ie. the master category)
+        """
+
+        return self.parent
 
 
 class YNAB3_Category_Lister(YNAB3_Lister):
@@ -101,6 +136,10 @@ class YNAB3_Category_Lister(YNAB3_Lister):
     YNAB3_Category_Lister Class
 
     """
+
+    def __init__(self):
+        self.contents = []
+        super(YNAB3_Category_Lister, self).__init__()
 
     def get_types(self):
         """ Get unique list of category types for this list

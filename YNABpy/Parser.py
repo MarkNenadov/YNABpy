@@ -78,7 +78,6 @@ class YNAB3_Parser:
         for category_node in self.minidom.getElementsByTagName('categories'):
             for c in category_node.getElementsByTagName(TAGS['MASTER_CAT']):
                 category = YNAB3_Category(c)
-                print( category.get_name() + 'yoyoma') 
                 c_lister.add( category )
         return c_lister
 

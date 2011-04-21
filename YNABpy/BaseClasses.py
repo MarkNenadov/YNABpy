@@ -103,6 +103,11 @@ class YNAB3_AccountingWidget:
 
         return self.get_property('memo')
 
+    def toxml(self):
+        """ Get XML representation of this objects dom
+        """
+        return self.dom.toxml()
+
 
 
 class YNAB3_Lister:
@@ -128,7 +133,6 @@ class YNAB3_Lister:
     def add(self, t):
         """ add an item
         """
-
         self.contents.append(t)
 
     def get_items_by_text_filter(self, field, filter_str):
