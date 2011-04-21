@@ -43,17 +43,14 @@ class YNAB3_Transaction(YNAB3_AccountingWidget):
     
     """
 
-    fields_of_interest = [xmlize('payee'), xmlize('date'), xmlize('accepted'), \
-                          xmlize('account'), xmlize('memo'), xmlize('inflow'), \
-                          xmlize('outflow')]
-
 
     def __init__(self, transaction_dom):
         """Constructor
 
         """
         super(YNAB3_Transaction, self).__init__(transaction_dom, [xmlize('accepted'), \
-              xmlize('date'), xmlize('account'), xmlize('payee'), xmlize('category')])
+              xmlize('date'), xmlize('account'), xmlize('payee'), xmlize('category'), \
+              xmlize('cleared')])
 
     def load_properties(self, child):
         """ __load_properties
@@ -86,6 +83,18 @@ class YNAB3_Transaction(YNAB3_AccountingWidget):
         """
 
         return self.get_property('account')
+
+    def get_category(self):
+        """ get_category
+        """
+
+        return self.get_property('category')
+
+    def get_cleared(self):
+        """ get_category
+        """
+
+        return self.get_property('cleared')
 
 
     def get_xml(self):
@@ -244,4 +253,23 @@ class YNAB3_Transaction_Lister(YNAB3_Lister):
                 not_accepted += 1
 
         return round(accepted / (accepted + not_accepted), 2) * 100
+
+
+    def get_pct_cleared(self):
+        """ Get percentage of transactions cleared in this transaction
+        lister
+        
+        Note: Technically speaking, cleared + not_cleared may not
+        add up to the total amount of transactions (if a transaction
+        dom node doesn't have the 'cleared' field)
+        """
+        cleared = 0
+        not_cleared = 0
+        for transaction in self.get_content():
+            if (transaction.get_cleared() == "Cleared"):
+                cleared += 1
+            else:
+                not_cleared += 1
+
+        return round(cleared / (cleared + not_cleared), 2) * 100
 
