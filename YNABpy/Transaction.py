@@ -220,6 +220,19 @@ class YNAB3_Transaction_Lister(YNAB3_Lister):
 
         return transaction_list
 
+    def get_transactions_by_date_filter(self, date_filter):
+        """
+        get transactions that have an date that falls inside
+        of a tuple in the format of (start date, stop date)
+        """
+
+        transaction_list = []
+
+        for transaction in self.get_content():
+            if transaction.get_date() != None:
+                if ((transaction.get_date() <= date_filter[1]) and (transaction.get_date() >= date_filter[0])):
+                    transaction_list.append(transaction) 
+        return transaction_list
 
 
     def get_total_inflow(self):
@@ -230,7 +243,6 @@ class YNAB3_Transaction_Lister(YNAB3_Lister):
         for transaction in self.get_content():
             inflow += float(transaction.get_inflow())
 
-, <dtml-sqlvar from_milestones type=int>        return inflow
 
     def get_total_outflow(self):
         """ Get total outflow represented in this transaction lister
