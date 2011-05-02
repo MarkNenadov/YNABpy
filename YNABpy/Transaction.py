@@ -49,8 +49,8 @@ class YNAB3_Transaction(YNAB3_AccountingWidget):
 
         """
         super(YNAB3_Transaction, self).__init__(transaction_dom, [xmlize('accepted'), \
-              xmlize('date'), xmlize('account'), xmlize('payee'), xmlize('category'), \
-              xmlize('cleared')])
+              xmlize('date'), xmlize('account'), xmlize('accountID'),xmlize('payee'), \
+              xmlize('category'), xmlize('cleared')])
 
     def load_properties(self, child):
         """ __load_properties
@@ -95,6 +95,12 @@ class YNAB3_Transaction(YNAB3_AccountingWidget):
         """
 
         return self.get_property('cleared')
+
+    def get_accountID(self):
+        """ get_accountID
+        """
+
+        return self.get_property('accountID')
 
 
     def get_xml(self):
@@ -224,7 +230,7 @@ class YNAB3_Transaction_Lister(YNAB3_Lister):
         for transaction in self.get_content():
             inflow += float(transaction.get_inflow())
 
-        return inflow
+, <dtml-sqlvar from_milestones type=int>        return inflow
 
     def get_total_outflow(self):
         """ Get total outflow represented in this transaction lister
@@ -259,9 +265,6 @@ class YNAB3_Transaction_Lister(YNAB3_Lister):
         """ Get percentage of transactions cleared in this transaction
         lister
         
-        Note: Technically speaking, cleared + not_cleared may not
-        add up to the total amount of transactions (if a transaction
-        dom node doesn't have the 'cleared' field)
         """
         cleared = 0
         not_cleared = 0
