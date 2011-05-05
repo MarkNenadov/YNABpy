@@ -65,6 +65,8 @@ class PDFReport:
         """ Draw the PDF
         """
 
+        # draw rectange outline of the PDF
+
         self.p.rect(CM(0.8),CM(0.8), PAGE_CONFIG['WIDTH']-CM(1.6), \
                PAGE_CONFIG['HEIGHT']-CM(1.6), fill=0)
 

@@ -10,11 +10,18 @@ Just run:
 
     python setup.py install
 
+REQUIREMENTS
+
+- Python
+- A YNAB3 database file
+- reportlab (if you want to use YNAB3.Reporting)
+
 TODO
 
 - Expand Category functionality
 - Better error handling
 - Add module docstrings to new modules
+- Reporting
 
 AUTHOR
 
