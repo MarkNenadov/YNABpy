@@ -5,6 +5,7 @@ TAGS['MASTER_CAT'] = 'data.vos.MasterCategoryVO'
 TAGS['SUB_CAT'] = 'data.vos.SubCategoryVO'
 TAGS['PAYEE'] = 'data.vos.PayeeVO'
 TAGS['TRAN'] = 'data.vos.TransactionVO'
+TAGS['MONTHLY_SUB_CAT_'] = 'data.vos.MonthlySubCategoryBudgetVO'
 
 def is_py3():
     """ Are we in Python 3?
