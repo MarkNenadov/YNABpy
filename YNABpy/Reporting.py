@@ -58,7 +58,7 @@ class PDFReport:
     """ Represents a YNABpy PDF report
     """
     
-    p = None
+    c = None
     lister = None
     lister_type = None
 
@@ -66,7 +66,7 @@ class PDFReport:
         """ Constructor, initialize canvas
         """
 
-        self.p = canvas.Canvas(file_name)
+        self.c = canvas.Canvas(file_name)
  
     def link2lister(self, lister):
         self.lister = lister
@@ -85,18 +85,30 @@ class PDFReport:
 
         # draw rectange outline of the PDF
 
-        self.p.rect(CM(0.8),CM(0.8), PAGE_CONFIG['WIDTH']-CM(1.6), \
+        self.c.rect(CM(0.8),CM(0.8), PAGE_CONFIG['WIDTH']-CM(1.6), \
                PAGE_CONFIG['HEIGHT']-CM(1.6), fill=0)
 
         if self.lister != None:
-            pass
+            if self.lister_type == "Transaction":
+                data_columns = ["Date", "Payee", "Account", "Balance", "Memo" ]
+                data_values = []
+                for trans in self.lister.get_content():
+                    data_values.append( [ trans.get_date(), trans.get_payee(), \
+                           trans.get_account(), trans.get_balance(), \
+                           trans.get_memo() ])
+        print( data_values )
+
+        self.c.rect(CM(0.8),CM(0.8),PAGE_CONFIG['WIDTH']-CM(1.6),PAGE_CONFIG['HEIGHT']-CM(1.6), fill=0)    
+        self.c.setFont("Helvetica", 18)
+        self.c.drawCentredString(PAGE_CONFIG['WIDTH']/2.0, PAGE_CONFIG['HEIGHT']-CM(2.0), "YNABpy Report on Transactions")
+
 
     def save(self):
         """ Save out the PDF
         """
 
-        self.p.showPage()
-        self.p.save()
+        self.c.showPage()
+        self.c.save()
 
 if __name__ == "__main__":
     pr = PDFReport('test.pdf')
