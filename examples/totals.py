@@ -14,3 +14,4 @@ print("Percentage of transactions accepted across the database:" + \
 print("Percentage of transactions cleared across the database:" + \
         str(transaction_lister.get_pct_cleared()))
 
+
