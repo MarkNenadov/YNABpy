@@ -32,9 +32,9 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 import sys
 
 from YNABpy.Transaction import YNAB3_Transaction_Lister
-from YNABpy.Transaction import YNAB3_Category_Lister
-from YNABpy.Transaction import YNAB3_MonthlyBudget_Lister
-from YNABpy.Transaction import YNAB3_Payee_Lister
+from YNABpy.Category import YNAB3_Category_Lister
+from YNABpy.MonthlyBudget import YNAB3_MonthlyBudget_Lister
+from YNABpy.Payee import YNAB3_Payee_Lister
 
 try:
     from reportlab.pdfgen import canvas
@@ -71,13 +71,13 @@ class PDFReport:
     def link2lister(self, lister):
         self.lister = lister
         if (self.lister.__class__ == YNAB3_Transaction_Lister): 
-            self.lister_type == 'Transaction'
+            self.lister_type = 'Transaction'
         elif (self.lister.__class__ == YNAB3_Category_Lister): 
-            self.lister_type == 'Category'
+            self.lister_type = 'Category'
         elif (self.lister.__class__ == YNAB3_MonthlyBudget_Lister): 
-            self.lister_type == 'MonthlyBudget'
+            self.lister_type = 'MonthlyBudget'
         elif (self.lister.__class__ == YNAB3_Payee_Lister): 
-            self.lister_type == 'Payee'
+            self.lister_type = 'Payee'
 
     def draw(self):
         """ Draw the PDF
