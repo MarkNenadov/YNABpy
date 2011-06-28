@@ -265,12 +265,12 @@ class YNAB3_Transaction_Lister(YNAB3_Lister):
         accepted = 0
         not_accepted = 0
         for transaction in self.get_content():
+            print(transaction.get_accepted())
             if (transaction.get_accepted() == "true"):
                 accepted += 1
             elif (transaction.get_accepted() == "false"):
                 not_accepted += 1
-
-        return round(accepted / (accepted + not_accepted), 2) * 100
+        return round(accepted / float(accepted + not_accepted), 2) * 100
 
 
     def get_pct_cleared(self):
@@ -286,5 +286,5 @@ class YNAB3_Transaction_Lister(YNAB3_Lister):
             else:
                 not_cleared += 1
 
-        return round(cleared / (cleared + not_cleared), 2) * 100
+        return round(cleared / float(cleared + not_cleared), 2) * 100
 
