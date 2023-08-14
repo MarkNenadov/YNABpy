@@ -29,6 +29,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 """
 
+import sys
 
 try:
     from YNABpy.Support import xmlize
@@ -37,8 +38,9 @@ try:
     from YNABpy.BaseClasses import YNAB3_Lister
     from YNABpy.BaseClasses import YNAB3_AccountingWidget
     from YNABpy.Category import YNAB3_Category
-except ImportError:
+except ImportError as err:
     print("FATAL ERROR, critical YNAB3py file missing: " + str(err))
+    sys.exit()
 
 class YNAB3_MonthlyBudget(YNAB3_AccountingWidget, YNAB3_Lister):
     """ YNAB3_MonthlyBudget
@@ -55,7 +57,6 @@ class YNAB3_MonthlyBudget(YNAB3_AccountingWidget, YNAB3_Lister):
         super(YNAB3_MonthlyBudget, self).__init__(category_dom, \
                 [xmlize('categoryName'),  xmlize('month')])
 
-
     def load_properties(self, child):
         """ __load_properties
         Private method to Load ynab category properties from a node
@@ -63,9 +64,9 @@ class YNAB3_MonthlyBudget(YNAB3_AccountingWidget, YNAB3_Lister):
 
         if child.nodeType == child.ELEMENT_NODE:
             if child.tagName in self.fields_of_interest:
-                for subchild in child.childNodes:
-                    if hasattr(subchild, "data"):
-                        setattr(self, child.tagName, subchild.data)
+                for subChild in child.childNodes:
+                    if hasattr(subChild, "data"):
+                        setattr(self, child.tagName, subChild.data)
 
     def get_children(self, name_filter=''):
         """ Get this Categories child Categories

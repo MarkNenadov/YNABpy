@@ -29,6 +29,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 """
 
+import sys
 
 try:
     from YNABpy.Support import xmlize
@@ -36,8 +37,10 @@ try:
     from YNABpy.Support import TAGS
     from YNABpy.BaseClasses import YNAB3_Lister
     from YNABpy.BaseClasses import YNAB3_AccountingWidget
-except ImportError:
+except ImportError as err:
     print("FATAL ERROR, critical YNAB3py file missing: " + str(err))
+    sys.exit()
+
 
 class YNAB3_Category(YNAB3_AccountingWidget, YNAB3_Lister):
     """ YNAB3_Category
@@ -52,10 +55,9 @@ class YNAB3_Category(YNAB3_AccountingWidget, YNAB3_Lister):
     def __init__(self, category_dom):
         """ Constructor
         """
-        
-        super(YNAB3_Category, self).__init__(category_dom, \
-                [xmlize('name'),  xmlize('type'), xmlize('note')])
 
+        super(YNAB3_Category, self).__init__(category_dom, \
+                                             [xmlize('name'), xmlize('type'), xmlize('note')])
 
     def load_properties(self, child):
         """ __load_properties
@@ -89,19 +91,19 @@ class YNAB3_Category(YNAB3_AccountingWidget, YNAB3_Lister):
                                 if category.get_name().find(name_filter) != -1:
                                     children.append(category)
         return children
-        
 
-    def get_name(self):
+    def get_name(self) -> str:
         """ get_name
         """
 
         return self.get_property('name')
 
-    def get_type(self):
+    def get_type(self) -> str:
         """ get_name
         """
 
         return self.get_property('type')
+
 
 class YNAB3_SubCategory(YNAB3_Category):
     """ YNAB3_Category
@@ -121,8 +123,7 @@ class YNAB3_SubCategory(YNAB3_Category):
         self.parent = parent
 
         super(YNAB3_Category, self).__init__(category_dom, \
-                [xmlize('name'),  xmlize('note')])
-
+                                             [xmlize('name'), xmlize('note')])
 
     def get_parent(self):
         """ Get this SubCategory's parent (ie. the master category)
@@ -145,7 +146,7 @@ class YNAB3_Category_Lister(YNAB3_Lister):
         """ Get unique list of category types for this list
         of categories
         """
-        
+
         types_list = []
 
         for category in self.contents:
@@ -154,4 +155,3 @@ class YNAB3_Category_Lister(YNAB3_Lister):
 
         # eliminate duplicates
         return list(set(types_list))
-

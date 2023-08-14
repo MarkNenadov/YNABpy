@@ -44,15 +44,15 @@ except ImportError:
     print("The reportlab module is a required for the Reporting parts of YNABpy. Please install that")
     sys.exit(0)
 
-PAGE_CONFIG = {}
-PAGE_CONFIG['HEIGHT'] = defaultPageSize[1]
-PAGE_CONFIG['WIDTH'] = defaultPageSize[0]
+PAGE_CONFIG = {'HEIGHT': defaultPageSize[1], 'WIDTH': defaultPageSize[0]}
 
-def CM(n):
+
+def CM(n) -> int:
     """ return a value in centimeters
     """
 
     return n*cm
+
 
 class PDFReport:
     """ Represents a YNABpy PDF report

@@ -7,6 +7,7 @@ try:
 except ImportError as err:
     print("FATAL ERROR, critical YNAB3py file missing: " + str(err)) 
 
+
 class YNAB3_Payee(YNAB3_AccountingWidget):
     """
     YNAB3Transaction class

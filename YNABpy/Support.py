@@ -7,19 +7,22 @@ TAGS['PAYEE'] = 'data.vos.PayeeVO'
 TAGS['TRAN'] = 'data.vos.TransactionVO'
 TAGS['MONTHLY_SUB_CAT_'] = 'data.vos.MonthlySubCategoryBudgetVO'
 
-def is_py3():
+
+def is_py3() -> bool:
     """ Are we in Python 3?
     """
 
     return sys.version_info[0] == 3
 
-def is_dom_element(dom):
+
+def is_dom_element(dom) -> bool:
     """ Is this dom an element?
     """
 
     if dom.nodeType == dom.ELEMENT_NODE:
         return True
     return False
+
 
 def xmlize(item):
     """ Do unicode on string if we

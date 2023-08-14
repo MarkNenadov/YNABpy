@@ -29,13 +29,10 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 """
 
-
-
 try:
     from YNABpy.Support import xmlize
 except ImportError:
     print("FATAL ERROR, critical YNAB3py file missing: " + str(err))
-
 
 
 class YNAB3_AccountingWidget(object):

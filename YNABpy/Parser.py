@@ -29,10 +29,13 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 """
 
+import sys
+
 try:
     from xml.dom import minidom
 except ImportError:
     print("FATAL ERROR: Can't import xml.dom.minidom!")
+    sys.exit()
 
 try:
     from YNABpy.Support import TAGS
@@ -46,6 +49,7 @@ try:
 except ImportError as err:
     print("FATAL ERROR, critical YNAB3py file missing: " + str(err))
 
+
 class YNAB3_Parser:
     """
     YNAB3Parser Class
@@ -53,7 +57,7 @@ class YNAB3_Parser:
     """
 
     minidom = None
-    
+
     def __init__(self, file_path):
         """Constructor
 
@@ -68,7 +72,7 @@ class YNAB3_Parser:
         payee_lister = YNAB3_Payee_Lister()
         for payee_node in self.minidom.getElementsByTagName('payees'):
             for p in payee_node.getElementsByTagName(TAGS['PAYEE']):
-                payee_lister.add( YNAB3_Payee(p) )
+                payee_lister.add(YNAB3_Payee(p))
         return payee_lister
 
     def get_category_lister(self):
@@ -78,7 +82,7 @@ class YNAB3_Parser:
         for category_node in self.minidom.getElementsByTagName('categories'):
             for c in category_node.getElementsByTagName(TAGS['MASTER_CAT']):
                 category = YNAB3_Category(c)
-                c_lister.add( category )
+                c_lister.add(category)
         return c_lister
 
     def get_transaction_lister(self):
@@ -88,25 +92,25 @@ class YNAB3_Parser:
         transaction_lister = YNAB3_Transaction_Lister()
         for transactions_node in self.minidom.getElementsByTagName('transactions'):
             for transaction in transactions_node.getElementsByTagName(TAGS['TRAN']):
-                transaction_lister.add( YNAB3_Transaction(transaction) )
+                transaction_lister.add(YNAB3_Transaction(transaction))
         return transaction_lister
+
 
 if __name__ == "__main__":
 
     print("This is a module meant for being imported. Please refer to examples in the project folder!")
 
-   
     YNAB_DATA_FILE = "F:/Development/PortableGit/YNABpy/YNABpy/test_budget.ynab3"
     YPARSER = YNAB3_Parser(YNAB_DATA_FILE)
 
-    #payee_lister = yparser.get_payee_lister()
-    #for x in payee_lister.get_payees_by_name("Mark"):
+    # payee_lister = yparser.get_payee_lister()
+    # for x in payee_lister.get_payees_by_name("Mark"):
     #   print( x.get_name() )
 
     category_lister = YPARSER.get_category_lister()
-    print( category_lister.get_types())
+    print(category_lister.get_types())
     for c in category_lister.get_content():
-        print( "Cat: " + c.get_name())
+        print("Cat: " + c.get_name())
         for x in c.get_children():
-            print( "Subcat: " + x.get_name() )
-        print( "yahoo" )
+            print("Subcat: " + x.get_name())
+        print("yahoo")
