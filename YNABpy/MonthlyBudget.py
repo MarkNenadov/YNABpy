@@ -42,6 +42,7 @@ except ImportError as err:
     print("FATAL ERROR, critical YNAB3py file missing: " + str(err))
     sys.exit()
 
+
 class YNAB3_MonthlyBudget(YNAB3_AccountingWidget, YNAB3_Lister):
     """ YNAB3_MonthlyBudget
 
@@ -53,9 +54,8 @@ class YNAB3_MonthlyBudget(YNAB3_AccountingWidget, YNAB3_Lister):
     def __init__(self, category_dom):
         """ Constructor
         """
-        
-        super(YNAB3_MonthlyBudget, self).__init__(category_dom, \
-                [xmlize('categoryName'),  xmlize('month')])
+
+        super(YNAB3_MonthlyBudget, self).__init__(category_dom, [xmlize('categoryName'), xmlize('month')])
 
     def load_properties(self, child):
         """ __load_properties
@@ -68,7 +68,7 @@ class YNAB3_MonthlyBudget(YNAB3_AccountingWidget, YNAB3_Lister):
                     if hasattr(subChild, "data"):
                         setattr(self, child.tagName, subChild.data)
 
-    def get_children(self, name_filter=''):
+    def get_children(self, name_filter='') -> []:
         """ Get this Categories child Categories
 
         (optional argument filters by name)
@@ -88,7 +88,6 @@ class YNAB3_MonthlyBudget(YNAB3_AccountingWidget, YNAB3_Lister):
                                 budget = YNAB3_MonthlySubCategoryBudget(subchild, self)
                                 children.append(budget)
         return children
-        
 
     def get_month(self):
         """ get_month
@@ -112,16 +111,13 @@ class YNAB3_MonthlySubCategoryBudget(YNAB3_Category):
 
         self.parent = parent
 
-        super(YNAB3_MonthlySubCategoryBudget, self).__init__(category_dom, \
-                [xmlize('name')])
-
+        super(YNAB3_MonthlySubCategoryBudget, self).__init__(category_dom, [xmlize('name')])
 
     def get_name(self):
         """ get_name
         """
 
         return self.get_property('categoryName')
-
 
     def get_parent(self):
         """ Get this SubCategory's parent (ie. the master category)
@@ -140,7 +136,7 @@ class YNAB3_MonthlyBudget_Lister(YNAB3_Lister):
         self.contents = []
         super(YNAB3_MonthlyBudget_Lister, self).__init__()
 
-    #def get_types(self):
+    # def get_types(self):
     #    """ Get unique list of category types for this list
     #    of categories
     #    """
@@ -153,5 +149,3 @@ class YNAB3_MonthlyBudget_Lister(YNAB3_Lister):
 
     #    # eliminate duplicates
     #    return list(set(types_list))
-
-

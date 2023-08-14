@@ -29,10 +29,13 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 """
 
+import sys
+
 try:
     from YNABpy.Support import xmlize
-except ImportError:
+except ImportError as err:
     print("FATAL ERROR, critical YNAB3py file missing: " + str(err))
+    sys.exit()
 
 
 class YNAB3_AccountingWidget(object):
@@ -60,7 +63,6 @@ class YNAB3_AccountingWidget(object):
         for child in transaction_dom.childNodes:
             self.load_properties(child)
 
-
     def get_property(self, name):
         """ get a property (return None if it doesn't exist)
 
@@ -70,7 +72,6 @@ class YNAB3_AccountingWidget(object):
         if hasattr(self, name):
             return getattr(self, name)
         return None
-
 
     def get_inflow(self):
         """ get_inflow
@@ -89,12 +90,12 @@ class YNAB3_AccountingWidget(object):
         for both outflow and inflow
         """
 
-        if self.get_outflow() != None and self.get_inflow() != None:
-            return float(self.get_inflow()) - float(self.get_outflow()) 
+        if self.get_outflow() is not None and self.get_inflow() is not None:
+            return float(self.get_inflow()) - float(self.get_outflow())
         else:
             return None
 
-    def get_memo(self):
+    def get_memo(self) -> str:
         """ get_memo
         """
 
@@ -104,7 +105,6 @@ class YNAB3_AccountingWidget(object):
         """ Get XML representation of this objects dom
         """
         return self.dom.toxml()
-
 
 
 class YNAB3_Lister(object):
@@ -119,20 +119,20 @@ class YNAB3_Lister(object):
     
         """
 
-        pass 
-    
-    def get_content(self):
+        pass
+
+    def get_content(self) -> []:
         """ return array of listed objects
         """
 
         return self.contents
 
-    def add(self, t):
+    def add(self, t) -> None:
         """ add an item
         """
         self.contents.append(t)
 
-    def get_items_by_text_filter(self, field, filter_str):
+    def get_items_by_text_filter(self, field: str, filter_value: str) -> []:
         """ Get items that have a argument-supplied property value that 
         matches a substring
         """
@@ -140,10 +140,8 @@ class YNAB3_Lister(object):
         item_list = []
 
         for item in self.get_content():
-            if item.get_property(field) != None:
-                if (item.get_property(field).find(filter_str) != -1):
+            if item.get_property(field) is not None:
+                if item.get_property(field).find(filter_value) != -1:
                     item_list.append(item)
 
         return item_list
-
-

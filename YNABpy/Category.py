@@ -56,8 +56,7 @@ class YNAB3_Category(YNAB3_AccountingWidget, YNAB3_Lister):
         """ Constructor
         """
 
-        super(YNAB3_Category, self).__init__(category_dom, \
-                                             [xmlize('name'), xmlize('type'), xmlize('note')])
+        super(YNAB3_Category, self).__init__(category_dom, [xmlize('name'), xmlize('type'), xmlize('note')])
 
     def load_properties(self, child):
         """ __load_properties
@@ -66,9 +65,9 @@ class YNAB3_Category(YNAB3_AccountingWidget, YNAB3_Lister):
 
         if child.nodeType == child.ELEMENT_NODE:
             if child.tagName in self.fields_of_interest:
-                for subchild in child.childNodes:
-                    if hasattr(subchild, "data"):
-                        setattr(self, child.tagName, subchild.data)
+                for subChild in child.childNodes:
+                    if hasattr(subChild, "data"):
+                        setattr(self, child.tagName, subChild.data)
 
     def get_children(self, name_filter=''):
         """ Get this Categories child Categories
@@ -122,8 +121,7 @@ class YNAB3_SubCategory(YNAB3_Category):
 
         self.parent = parent
 
-        super(YNAB3_Category, self).__init__(category_dom, \
-                                             [xmlize('name'), xmlize('note')])
+        super(YNAB3_Category, self).__init__(category_dom, [xmlize('name'), xmlize('note')])
 
     def get_parent(self):
         """ Get this SubCategory's parent (ie. the master category)
@@ -142,7 +140,7 @@ class YNAB3_Category_Lister(YNAB3_Lister):
         self.contents = []
         super(YNAB3_Category_Lister, self).__init__()
 
-    def get_types(self):
+    def get_types(self) -> []:
         """ Get unique list of category types for this list
         of categories
         """
@@ -150,7 +148,7 @@ class YNAB3_Category_Lister(YNAB3_Lister):
         types_list = []
 
         for category in self.contents:
-            if category.get_type() != None:
+            if category.get_type() is not None:
                 types_list.append(category.get_type())
 
         # eliminate duplicates

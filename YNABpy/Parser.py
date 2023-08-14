@@ -48,6 +48,7 @@ try:
 
 except ImportError as err:
     print("FATAL ERROR, critical YNAB3py file missing: " + str(err))
+    sys.exit()
 
 
 class YNAB3_Parser:
@@ -65,7 +66,7 @@ class YNAB3_Parser:
 
         self.minidom = minidom.parse(file_path)
 
-    def get_payee_lister(self):
+    def get_payee_lister(self) -> YNAB3_Payee_Lister:
         """ get_payee_lister
         """
 
@@ -75,17 +76,17 @@ class YNAB3_Parser:
                 payee_lister.add(YNAB3_Payee(p))
         return payee_lister
 
-    def get_category_lister(self):
+    def get_category_lister(self) -> YNAB3_Category_Lister:
         """ get_category_lister
         """
-        c_lister = YNAB3_Category_Lister()
+        lister = YNAB3_Category_Lister()
         for category_node in self.minidom.getElementsByTagName('categories'):
             for c in category_node.getElementsByTagName(TAGS['MASTER_CAT']):
                 category = YNAB3_Category(c)
-                c_lister.add(category)
-        return c_lister
+                lister.add(category)
+        return lister
 
-    def get_transaction_lister(self):
+    def get_transaction_lister(self) -> YNAB3_Transaction_Lister:
         """ get_transaction_lister
         """
 

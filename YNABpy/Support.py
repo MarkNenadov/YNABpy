@@ -1,11 +1,7 @@
 import sys
 
-TAGS = {}
-TAGS['MASTER_CAT'] = 'data.vos.MasterCategoryVO'
-TAGS['SUB_CAT'] = 'data.vos.SubCategoryVO'
-TAGS['PAYEE'] = 'data.vos.PayeeVO'
-TAGS['TRAN'] = 'data.vos.TransactionVO'
-TAGS['MONTHLY_SUB_CAT_'] = 'data.vos.MonthlySubCategoryBudgetVO'
+TAGS = {'MASTER_CAT': 'data.vos.MasterCategoryVO', 'SUB_CAT': 'data.vos.SubCategoryVO', 'PAYEE': 'data.vos.PayeeVO',
+        'TRAN': 'data.vos.TransactionVO', 'MONTHLY_SUB_CAT_': 'data.vos.MonthlySubCategoryBudgetVO'}
 
 
 def is_py3() -> bool:
