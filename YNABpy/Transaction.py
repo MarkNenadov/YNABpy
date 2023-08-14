@@ -231,7 +231,7 @@ class YNAB3_Transaction_Lister(YNAB3_Lister):
                     transaction_list.append(transaction)
         return transaction_list
 
-    def get_total_inflow(self) -> [int]:
+    def get_total_inflow(self) -> int:
         """ Get total inflow represented in this transaction lister
         """
         inflow = 0
@@ -239,7 +239,9 @@ class YNAB3_Transaction_Lister(YNAB3_Lister):
         for transaction in self.get_content():
             inflow += float(transaction.get_inflow())
 
-    def get_total_outflow(self):
+        return inflow
+
+    def get_total_outflow(self) -> int:
         """ Get total outflow represented in this transaction lister
         """
         outflow = 0
@@ -249,7 +251,7 @@ class YNAB3_Transaction_Lister(YNAB3_Lister):
 
         return outflow
 
-    def get_pct_accepted(self):
+    def get_pct_accepted(self) -> float:
         """ Get percentage of transactions accepted in this transaction
         lister
         
@@ -267,7 +269,7 @@ class YNAB3_Transaction_Lister(YNAB3_Lister):
                 not_accepted += 1
         return round(accepted / float(accepted + not_accepted), 2) * 100
 
-    def get_pct_cleared(self):
+    def get_pct_cleared(self) -> float:
         """ Get percentage of transactions cleared in this transaction
         lister
         
